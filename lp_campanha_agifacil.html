@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab Tutto + AgiFácil — Teste na Sua Casa</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: sans-serif; color: #333; padding: 1rem; max-width: 400px; margin: auto; }
+    h1 { color: #d63384; margin-bottom: .5rem; }
+    label { display: block; margin: .5rem 0; }
+    input { width: 100%; padding: .5rem; margin-top: .25rem; box-sizing: border-box; }
+    button { background: #0069d9; color: white; border: none; padding: .75rem; width: 100%; margin-top: 1rem; cursor: pointer; }
+    button:disabled { background: #aaa; }
+    .success { color: green; margin-top: 1rem; }
+    .error   { color: red; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+
+  <h1>Lab Tutto + AgiFácil</h1>
+  <p><strong>Teste na Sua Casa</strong></p>
+  <p>Cadastre-se e receba gratuitamente uma amostra AgiFácil em seu endereço.</p>
+
+  <form id="leadForm" action="https://script.google.com/macros/s/AKfycbyfEvizRfZMJUTu0_7Jz5cQmYMXz-Dqa4WzMHTcGqJCoiYLTeiSO8GS-n2vtR0anSD8IQ/exec" method="post">
+    <label>
+      Nome
+      <input type="text" name="nome" required>
+    </label>
+    <label>
+      Endereço
+      <input type="text" name="endereco" required>
+    </label>
+    <label>
+      E-mail
+      <input type="email" name="email" required>
+    </label>
+    <label>
+      WhatsApp
+      <input type="tel" name="whatsapp" required placeholder="+55 (21) 99999-9999">
+    </label>
+    <button type="submit">Quero Testar</button>
+  </form>
+
+  <div id="msgSuccess" class="success" style="display:none;">
+    Obrigado! Em breve entraremos em contato.
+  </div>
+  <div id="msgError" class="error" style="display:none;"></div>
+
+  <script>
+    const form      = document.getElementById('leadForm');
+    const btn       = form.querySelector('button');
+    const msgSuccess= document.getElementById('msgSuccess');
+    const msgError  = document.getElementById('msgError');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      btn.disabled = true;
+      msgError.style.display = 'none';
+
+      const data = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: data
+      })
+      .then(resp => resp.json())
+      .then(json => {
+        if (json.result === 'success') {
+          form.style.display = 'none';
+          msgSuccess.style.display = 'block';
+        } else {
+          throw new Error(json.message || 'Erro genérico');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        btn.disabled = false;
+        msgError.textContent = `Erro: ${err.message}`;
+        msgError.style.display = 'block';
+      });
+    });
+  </script>
+
+</body>
+</html>
