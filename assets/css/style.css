@@ -26,14 +26,48 @@
      ========================================================================== */
   /* Fullscreen + imagem de background */
   .split-hero {
+    position: relative;              /* para conter o ::before */
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 100vh;
     margin: 0;
     padding: 0;
-    background: url("../img/bg-alta-resolucao.jpg") no-repeat center/cover;
+  
+    /* seu background normal */
+    background: url("../img/widescreen (16_9).png") no-repeat center center/contain;
   }
+  
+  /* vinheta */
+  .split-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;            /* não atrapalha cliques */
+    /* radial-gradient: transparente no centro, escurecendo nas bordas */
+    background: radial-gradient(
+      circle at center,
+      rgba(0,0,0,0) 40%,
+      rgba(0,0,0,0.8) 100%
+    );
+    mix-blend-mode: multiply;        /* mistura suave */
+    z-index: 1;
+  }
+  
+  /* seu form deve vir acima da vinheta */
+  .split-hero__form {
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* trocar para ultrawide em 21:9 */
+  @media (min-aspect-ratio: 21/9) {
+    .split-hero {
+      background-image: url("../img/ultrawide (21_9).png");
+    }
+  }
+  
   
   /* Coluna do formulário */
   .split-hero__form {
@@ -61,6 +95,33 @@
     align-items: center;
     height: 100%;
   }
+
+
+/* Ajustes: transparência do formulário e centralização do título */
+.split-hero__form {
+  /* troca o gradient transparente por um fundo branco mais opaco */
+  background-color: rgba(255, 255, 255, 0.9);
+  /* caso queira manter o gradient, use algo assim:
+  background: linear-gradient(
+    to bottom,
+    rgba(200, 200, 200, 0.9),
+    rgba(255, 255, 255, 0.9)
+  );
+  */
+}
+
+/* centraliza título e subtítulo */
+.split-hero__form h2,
+.split-hero__form p {
+  text-align: center;
+}
+
+/* mantém negrito apenas no h2 */
+.split-hero__form h2 {
+  font-weight: bold;
+}
+
+
   
   /* ==========================================================================
      3. COMPONENTES
@@ -146,10 +207,13 @@
     object-fit: contain;
     filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
   }
-  
-  /* Campos específicos */
-  #cep      { max-width: 140px; }
-  #whatsapp { max-width: 180px; }
+
+  /* faz CEP e WhatsApp terem largura igual aos demais inputs */
+  #cep,
+  #whatsapp {
+    max-width: none;
+    width: 100%;
+  }
   
   /* ==========================================================================
      4. RESPONSIVO
