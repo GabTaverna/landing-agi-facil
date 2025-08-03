@@ -1,0 +1,179 @@
+/* ==========================================================================
+   1. GLOBAL
+   ========================================================================== */
+   :root {
+    --brand: #d63384;
+    --brand-dark: #c12761;
+    --bg: #f0f4ff;
+    --text: #333;
+    --text-light: #666;
+  }
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  
+  /* ==========================================================================
+     2. LAYOUT
+     ========================================================================== */
+  /* Fullscreen + imagem de background */
+  .split-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: url("../img/bg-alta-resolucao.jpg") no-repeat center/cover;
+  }
+  
+  /* Coluna do formulário */
+  .split-hero__form {
+    flex: 0 0 33.333%;
+    margin: auto 3% auto 5%;
+    padding: 1.5rem;
+    background: linear-gradient(
+      to bottom,
+      rgba(200,200,200,0.35),
+      rgba(255,255,255,0.35)
+    );
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Coluna da imagem */
+  .split-hero__visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  /* ==========================================================================
+     3. COMPONENTES
+     ========================================================================== */
+  /* Título e subtítulo */
+  .split-hero__form h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #D7281C;
+  }
+  .split-hero__form p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Grid do formulário */
+  .form--grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  .form__group {
+    font-size: 1rem;
+  }
+  .form__group label {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .form__group input {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  /* Full-width e double */
+  .form__group--full,
+  .form__group--double {
+    grid-column: 1 / -1;
+  }
+  
+  /* Botão */
+  .btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 150ms;
+  }
+  .btn:hover:not(:disabled) {
+    background: var(--brand-dark);
+  }
+  .btn:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+  }
+  
+  /* Mensagens de feedback */
+  .form__message {
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 1rem;
+    display: none;
+  }
+  .form__message--success { color: green; }
+  .form__message--error   { color: red; }
+  
+  /* Imagem dos produtos */
+  .product-wrap {
+    width: 100%;
+    height: 100%;
+  }
+  .product-img {
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+  }
+  
+  /* Campos específicos */
+  #cep      { max-width: 140px; }
+  #whatsapp { max-width: 180px; }
+  
+  /* ==========================================================================
+     4. RESPONSIVO
+     ========================================================================== */
+  @media (min-width: 768px) {
+    .form--grid {
+      grid-template-columns: repeat(2,1fr);
+    }
+  }
+  @media (max-width: 767px) {
+    .split-hero {
+      flex-direction: column;
+      height: auto;
+      padding: 1rem 0;
+    }
+    .split-hero__form,
+    .split-hero__visual {
+      flex: none;
+      width: 100%;
+      margin: 1rem 0;
+      padding: 1rem;
+    }
+    .split-hero__visual {
+      margin-top: 0;
+    }
+  }
+  

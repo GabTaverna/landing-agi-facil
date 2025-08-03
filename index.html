@@ -4,81 +4,112 @@
   <meta charset="UTF-8">
   <title>Lab Tutto + AgiFácil — Teste na Sua Casa</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <style>
-    body { font-family: sans-serif; color: #333; padding: 1rem; max-width: 400px; margin: auto; }
-    h1 { color: #d63384; margin-bottom: .5rem; }
-    label { display: block; margin: .5rem 0; }
-    input { width: 100%; padding: .5rem; margin-top: .25rem; box-sizing: border-box; }
-    button { background: #0069d9; color: white; border: none; padding: .75rem; width: 100%; margin-top: 1rem; cursor: pointer; }
-    button:disabled { background: #aaa; }
-    .success { color: green; margin-top: 1rem; }
-    .error   { color: red; margin-top: 1rem; }
-  </style>
+  <meta name="description" content="Cadastre-se e receba gratuitamente uma amostra AgiFácil em seu endereço.">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-  <h1>Lab Tutto + AgiFácil</h1>
-  <p><strong>Teste na Sua Casa</strong></p>
-  <p>Cadastre-se e receba gratuitamente uma amostra AgiFácil em seu endereço.</p>
+  <!-- ========== SPLIT HERO ========== -->
+  <section class="split-hero">
+    <!-- Coluna do Formulário -->
+    <div class="split-hero__form">
+      <h2>Teste na Sua Casa</h2>
+      <p>Cadastre-se e receba gratuitamente uma amostra AgiFácil.</p>
 
-  <form id="leadForm" action="https://script.google.com/macros/s/AKfycbyfEvizRfZMJUTu0_7Jz5cQmYMXz-Dqa4WzMHTcGqJCoiYLTeiSO8GS-n2vtR0anSD8IQ/exec" method="post">
-    <label>
-      Nome
-      <input type="text" name="nome" required>
-    </label>
-    <label>
-      Endereço
-      <input type="text" name="endereco" required>
-    </label>
-    <label>
-      E-mail
-      <input type="email" name="email" required>
-    </label>
-    <label>
-      WhatsApp
-      <input type="tel" name="whatsapp" required placeholder="+55 (21) 99999-9999">
-    </label>
-    <button type="submit">Quero Testar</button>
-  </form>
+      <form id="leadForm" class="form form--grid"
+            action="https://script.google.com/macros/s/AKfycbyfEvizRfZMJUTu0_7Jz5cQmYMXz-Dqa4WzMHTcGqJCoiYLTeiSO8GS-n2vtR0anSD8IQ/exec"
+            method="post"
+            novalidate>
 
-  <div id="msgSuccess" class="success" style="display:none;">
-    Obrigado! Em breve entraremos em contato.
-  </div>
-  <div id="msgError" class="error" style="display:none;"></div>
+        <!-- Nome full-width -->
+        <div class="form__group form__group--double">
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" type="text" required>
+        </div>
 
-  <script>
-    const form      = document.getElementById('leadForm');
-    const btn       = form.querySelector('button');
-    const msgSuccess= document.getElementById('msgSuccess');
-    const msgError  = document.getElementById('msgError');
+        <!-- 5 campos esquerda -->
+        <div class="form__group">
+          <label for="cep">CEP</label>
+          <input id="cep"
+                 name="cep"
+                 type="text"
+                 required
+                 placeholder="00000-000"
+                 pattern="\d{5}-\d{3}"
+                 title="Digite no formato 22051-030"
+                 inputmode="numeric"
+                 maxlength="9">
+        </div>
+        <div class="form__group">
+          <label for="cidade">Cidade</label>
+          <input id="cidade" name="cidade" type="text" required>
+        </div>
+        <div class="form__group">
+          <label for="bairro">Bairro</label>
+          <input id="bairro" name="bairro" type="text" required>
+        </div>
+        <div class="form__group">
+          <label for="rua">Rua</label>
+          <input id="rua" name="rua" type="text" required>
+        </div>
+        <div class="form__group">
+          <label for="numero">Número</label>
+          <input id="numero" name="numero" type="text" required>
+        </div>
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      btn.disabled = true;
-      msgError.style.display = 'none';
+        <!-- 5 campos direita -->
+        <div class="form__group">
+          <label for="complemento">Complemento <small>(opcional)</small></label>
+          <input id="complemento" name="complemento" type="text">
+        </div>
+        <div class="form__group">
+          <label for="referencia">Referência <small>(opcional)</small></label>
+          <input id="referencia" name="referencia" type="text">
+        </div>
+        <div class="form__group">
+          <label for="instagram">@ Instagram <small>(opcional)</small></label>
+          <input id="instagram" name="instagram" type="text" placeholder="@seuperfil">
+        </div>
+        <div class="form__group">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" required>
+        </div>
+        <div class="form__group">
+          <label for="whatsapp">WhatsApp</label>
+          <input id="whatsapp"
+                 name="whatsapp"
+                 type="tel"
+                 required
+                 placeholder="(21) 90000-0000"
+                 pattern="\(\d{2}\)\s?\d{4,5}-\d{4}"
+                 title="Digite no formato (21) 90000-0000"
+                 inputmode="tel"
+                 maxlength="15">
+        </div>
 
-      const data = new FormData(form);
-      fetch(form.action, {
-        method: 'POST',
-        body: data
-      })
-      .then(resp => resp.json())
-      .then(json => {
-        if (json.result === 'success') {
-          form.style.display = 'none';
-          msgSuccess.style.display = 'block';
-        } else {
-          throw new Error(json.message || 'Erro genérico');
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        btn.disabled = false;
-        msgError.textContent = `Erro: ${err.message}`;
-        msgError.style.display = 'block';
-      });
-    });
-  </script>
+        <!-- Botão full-width -->
+        <div class="form__group form__group--full">
+          <button class="btn" type="submit">Quero receber!</button>
+        </div>
+      </form>
 
+      <!-- Mensagens de feedback -->
+      <div id="msgSuccess" class="form__message form__message--success" aria-live="polite"></div>
+      <div id="msgError" class="form__message form__message--error" aria-live="assertive"></div>
+    </div>
+
+    <!-- Coluna do Visual dos Produtos -->
+    <div class="split-hero__visual">
+      <div class="product-wrap">
+        <img src="assets/img/produtos-agifacil.png"
+             alt="Produtos AgiFácil"
+             class="product-img">
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script src="assets/js/masks.js" defer></script>
+  <script src="assets/js/form.js"  defer></script>
 </body>
 </html>
